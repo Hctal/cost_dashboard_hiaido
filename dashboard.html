@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cost Dashboard</title>
+</head>
+<body>
+    <h1>AWS Cost Dashboard</h1>
+    <div id="cost-container">
+        <h2>Service Costs</h2>
+        <ul id="cost-list"></ul>
+    </div>
+
+    <script>
+        // Fetch the cost data from the /api/costs endpoint and display it
+        fetch('/api/costs')
+            .then(response => response.json())
+            .then(data => {
+                const costList = document.getElementById('cost-list');
+                data.forEach(item => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${item.service}: $${item.cost}`;
+                    costList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching cost data:', error);
+                const costContainer = document.getElementById('cost-container');
+                costContainer.innerHTML = '<p>Error loading cost data.</p>';
+            });
+    </script>
+</body>
+</html>
